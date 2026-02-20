@@ -1,0 +1,46 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  min-height: 100vh;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Widget card base styles - widgets will inherit these */
+:host ::ng-deep .widget-card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: 0 2px 8px var(--color-shadow);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+:host ::ng-deep .widget-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard {
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+}
+
+/* Disable hover effects on reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  :host ::ng-deep .widget-card:hover {
+    transform: none;
+    box-shadow: 0 2px 8px var(--color-shadow);
+  }
+}

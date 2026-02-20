@@ -1,0 +1,33 @@
+<div class="widget-card quote-widget">
+
+  <!-- Skeleton / Loading state -->
+  @if (isLoading()) {
+    <div class="widget-content skeleton-content" aria-busy="true" aria-label="Loading quote">
+      <div class="skeleton skeleton-quote-line"></div>
+      <div class="skeleton skeleton-quote-line skeleton-short"></div>
+      <div class="skeleton skeleton-author-line"></div>
+    </div>
+  }
+
+  <!-- Loaded state -->
+  @if (!isLoading() && quote()) {
+    <div class="widget-content quote-content">
+      <div class="quote-mark" aria-hidden="true">"</div>
+      <blockquote class="quote-text">
+        {{ displayText() }}
+        @if (needsTruncation()) {
+          <button
+            class="read-more-btn"
+            (click)="toggleExpand()"
+            [attr.aria-expanded]="isExpanded()"
+            aria-label="Toggle full quote"
+          >
+            {{ isExpanded() ? 'Read less' : 'Read more' }}
+          </button>
+        }
+      </blockquote>
+      <p class="quote-author" aria-label="Quote author">— {{ quote()!.a }}</p>
+    </div>
+  }
+
+</div>

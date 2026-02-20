@@ -1,0 +1,111 @@
+.widget-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 8px var(--color-shadow);
+  padding: var(--spacing-lg);
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation: fade-slide-up 300ms ease-out both;
+  animation-delay: 200ms;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.widget-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* --- Skeleton state --- */
+.skeleton-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.skeleton-quote-line {
+  height: 1rem;
+  width: 100%;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-quote-line.skeleton-short {
+  width: 70%;
+}
+
+.skeleton-author-line {
+  height: 0.875rem;
+  width: 40%;
+  margin-top: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+}
+
+/* --- Loaded quote state --- */
+.quote-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.quote-mark {
+  font-size: 3rem;
+  line-height: 0.8;
+  color: var(--color-accent, #1976d2);
+  font-family: Georgia, serif;
+  opacity: 0.4;
+  user-select: none;
+  margin-bottom: calc(-1 * var(--spacing-xs));
+}
+
+.quote-text {
+  margin: 0;
+  padding: 0;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.read-more-btn {
+  display: inline-block;
+  margin-left: 0.25rem;
+  background: none;
+  border: none;
+  color: #1976d2;
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  font-style: normal;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.read-more-btn:hover {
+  color: #1565c0;
+}
+
+.read-more-btn:focus-visible {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.quote-author {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .widget-card,
+  .widget-card:hover {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+}

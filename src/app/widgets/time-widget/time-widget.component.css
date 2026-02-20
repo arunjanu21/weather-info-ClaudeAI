@@ -1,0 +1,84 @@
+.widget-card {
+  background: var(--color-surface, #ffffff);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--spacing-lg, 24px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: fade-slide-up 0.3s ease-out;
+}
+
+.widget-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.widget-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 16px);
+  align-items: center;
+}
+
+.time-display {
+  font-size: 3rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+  color: var(--color-text-primary, #1a1a1a);
+  line-height: 1;
+}
+
+.date-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs, 8px);
+}
+
+.day-of-week {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-secondary, #666666);
+}
+
+.date-label {
+  font-size: 1rem;
+  color: var(--color-text-secondary, #999999);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .time-display {
+    font-size: 2.5rem;
+  }
+
+  .day-of-week {
+    font-size: 1.1rem;
+  }
+
+  .date-label {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .time-display {
+    font-size: 2rem;
+  }
+
+  .widget-card {
+    padding: var(--spacing-md, 16px);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .widget-card {
+    animation: none;
+    transition: none;
+  }
+
+  .widget-card:hover {
+    transform: none;
+  }
+}

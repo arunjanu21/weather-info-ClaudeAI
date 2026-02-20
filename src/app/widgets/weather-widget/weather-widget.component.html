@@ -1,0 +1,74 @@
+<div class="widget-card weather-widget">
+
+  <!-- Skeleton / Locating state -->
+  @if (state() === 'locating' || state() === 'loading' || state() === 'idle') {
+    <div class="widget-content skeleton-content" aria-busy="true" aria-label="Loading weather data">
+      <div class="skeleton skeleton-icon"></div>
+      <div class="skeleton-details">
+        <div class="skeleton skeleton-temp"></div>
+        <div class="skeleton skeleton-desc"></div>
+        <div class="skeleton skeleton-loc"></div>
+      </div>
+    </div>
+  }
+
+  <!-- Loaded state -->
+  @if (state() === 'loaded' && weatherData()) {
+    <div class="widget-content weather-content">
+      <div class="weather-icon" aria-hidden="true">{{ weatherData()!.icon }}</div>
+      <div class="weather-details">
+        <div class="weather-temp">
+          <span class="temp-celsius">{{ weatherData()!.tempC }}°C</span>
+          <span class="temp-separator"> / </span>
+          <span class="temp-fahrenheit">{{ weatherData()!.tempF }}°F</span>
+        </div>
+        <div class="weather-desc">{{ weatherData()!.description }}</div>
+        <div class="weather-humidity">Humidity: {{ weatherData()!.humidity }}%</div>
+        @if (weatherData()!.locationName) {
+          <div class="weather-location">
+            <span class="location-pin" aria-hidden="true">📍</span>
+            {{ weatherData()!.locationName }}
+          </div>
+        }
+        @if (isStaleCache()) {
+          <div class="stale-warning" role="status">(Cached — offline)</div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- City input state -->
+  @if (state() === 'city_input') {
+    <div class="widget-content city-input-content">
+      <div class="city-input-icon" aria-hidden="true">🌍</div>
+      <p class="city-input-prompt">Enter a city to see weather</p>
+      <form class="city-form" (ngSubmit)="onCitySubmit()" aria-label="City search">
+        <input
+          class="city-input"
+          type="text"
+          name="city"
+          [ngModel]="cityInput()"
+          (ngModelChange)="cityInput.set($event)"
+          placeholder="e.g. London"
+          aria-label="City name"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button class="city-submit" type="submit" aria-label="Search weather">Search</button>
+      </form>
+      @if (cityError()) {
+        <p class="city-error" role="alert">{{ cityError() }}</p>
+      }
+    </div>
+  }
+
+  <!-- Error state -->
+  @if (state() === 'error') {
+    <div class="widget-content error-content" role="alert">
+      <div class="error-icon" aria-hidden="true">⚠️</div>
+      <p class="error-message">{{ errorMessage() }}</p>
+      <button class="retry-btn" (click)="retry()">Retry</button>
+    </div>
+  }
+
+</div>

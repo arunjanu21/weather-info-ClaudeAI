@@ -1,0 +1,18 @@
+<div class="widget-card" role="region" aria-label="Current time and date">
+  <div class="widget-content">
+    <div
+      class="time-display"
+      role="timer"
+      [attr.aria-label]="hours() + ':' + minutes() + ':' + seconds()"
+    >
+      {{ hours() }}:{{ minutes() }}:{{ seconds() }}
+    </div>
+    <div
+      class="date-display"
+      [attr.aria-label]="dayOfWeek() + ', ' + dateLabel()"
+    >
+      <div class="day-of-week" aria-hidden="true">{{ dayOfWeek() }}</div>
+      <div class="date-label" aria-hidden="true">{{ dateLabel() }}</div>
+    </div>
+  </div>
+</div>
