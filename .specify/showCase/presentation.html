@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spec-Driven Development Showcase</title>
+
+<!-- Reveal.js CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+
+<style>
+/* ─── ROOT THEME ─────────────────────────────────────────── */
+:root {
+  --navy:      #0A1628;
+  --navy2:     #0D2137;
+  --blue:      #1565C0;
+  --accent:    #00B4D8;
+  --accentAlt: #0288D1;
+  --green:     #10B981;
+  --amber:     #F59E0B;
+  --red:       #EF4444;
+  --white:     #FFFFFF;
+  --lightbg:   #EEF5FF;
+  --midgray:   #94A3B8;
+  --darktext:  #1E293B;
+  --card:      #0D2137;
+}
+
+.reveal-viewport { background: var(--navy); }
+
+.reveal {
+  font-family: 'Segoe UI', 'Calibri', Arial, sans-serif;
+  font-size: 36px;
+  color: var(--white);
+}
+
+.reveal .slides section {
+  height: 100%;
+  padding: 0;
+  text-align: left;
+}
+
+/* ─── LAYOUT HELPERS ─────────────────────────────────────── */
+.slide-dark  { background: var(--navy) !important; }
+.slide-light { background: var(--lightbg) !important; }
+
+.chip {
+  display: inline-block;
+  background: rgba(0,180,216,.18);
+  color: var(--accent);
+  border-radius: 20px;
+  padding: 3px 14px;
+  font-size: .38em;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.chip-light {
+  background: rgba(21,101,192,.12);
+  color: var(--blue);
+}
+
+.accent-line {
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  border-radius: 2px;
+  margin: 6px 0 12px;
+}
+
+.slide-title {
+  font-size: .75em;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 16px;
+}
+.slide-title-light { color: var(--darktext); }
+
+.footer {
+  position: absolute;
+  bottom: 14px;
+  right: 28px;
+  font-size: .26em;
+  color: var(--midgray);
+  font-style: italic;
+}
+
+/* ─── SLIDE 1 — TITLE ────────────────────────────────────── */
+#s1 .left-panel {
+  position: absolute; left:0; top:0;
+  width: 34%; height: 100%;
+  background: #0D2137;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 0 24px;
+}
+#s1 .accent-bar {
+  position: absolute; left: 34%; top:0;
+  width: 5px; height: 100%;
+  background: var(--accent);
+}
+#s1 .logo-ring {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  border: 3px solid var(--accent);
+  background: rgba(0,180,216,.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.2em; font-weight: 900;
+  color: var(--accent);
+  margin-bottom: 22px;
+}
+#s1 .badge { color: var(--accent); font-size:.38em; font-weight:700; letter-spacing:2px; text-align:center; margin-bottom:8px; }
+#s1 .big-title { font-size:.78em; font-weight:900; text-align:center; line-height:1.2; color:var(--white); }
+#s1 .sub-title { font-size:.36em; color:var(--accent); font-style:italic; text-align:center; margin-top:10px; }
+#s1 .presenter { font-size:.3em; color:var(--midgray); text-align:center; margin-top:18px; line-height:1.6; }
+
+#s1 .right-panel {
+  position: absolute; left:35%; top:0;
+  width: 65%; height: 100%;
+  display: flex; flex-direction: column;
+  padding: 28px 28px 28px 24px;
+  box-sizing: border-box;
+}
+#s1 .kpi-label { font-size:.32em; font-weight:700; color:var(--accent); letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
+#s1 .kpi-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 14px; flex: 0 0 auto;
+}
+#s1 .kpi-card {
+  background: var(--navy2);
+  border: 1.5px solid var(--accent);
+  border-radius: 12px;
+  padding: 14px 10px 10px;
+  text-align: center;
+}
+#s1 .kpi-num { font-size:1.3em; font-weight:900; color:var(--accent); line-height:1; }
+#s1 .kpi-title { font-size:.32em; font-weight:600; color:var(--white); margin-top:6px; }
+#s1 .kpi-sub { font-size:.25em; color:var(--midgray); font-style:italic; }
+
+#s1 .tech-bar {
+  border-top: 1px solid rgba(0,180,216,.3);
+  margin-top: 16px;
+  padding-top: 12px;
+  font-size: .32em; color: var(--midgray); font-style: italic; text-align:center;
+}
+#s1 .audience { font-size:.27em; color:var(--midgray); text-align:right; margin-top:auto; padding-top:8px; font-style:italic; }
+
+/* ─── SLIDE 2 — CHALLENGE ────────────────────────────────── */
+#s2 .two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:8px; }
+.col-box { border-radius:14px; overflow:hidden; }
+.col-head { padding:10px 18px; font-size:.38em; font-weight:700; color:#fff; }
+.col-body { padding:12px 18px 16px; }
+.col-item { font-size:.34em; padding:7px 0; border-bottom:1px solid rgba(255,255,255,.08); display:flex; align-items:flex-start; gap:8px; }
+.col-item:last-child { border-bottom:none; }
+.vs-badge {
+  position:absolute; left:50%; top:50%;
+  transform: translate(-50%,-50%);
+  width:54px; height:54px; border-radius:50%;
+  background:var(--navy); border:2.5px solid var(--accent);
+  display:flex; align-items:center; justify-content:center;
+  font-size:.42em; font-weight:900; color:var(--white);
+  z-index:10;
+}
+
+/* ─── SLIDE 3 — COMPARISON TABLE ────────────────────────── */
+.compare-table { width:100%; border-collapse:collapse; font-size:.34em; margin-top:10px; }
+.compare-table th {
+  background: var(--blue); color:#fff;
+  padding: 10px 14px; text-align:center; font-size:1em;
+}
+.compare-table td {
+  padding: 9px 14px; border:1px solid #1E3A5F;
+  background: var(--navy2); color:var(--white);
+  text-align:center; vertical-align:middle;
+}
+.compare-table tr:nth-child(even) td { background:#0A1E32; }
+.compare-table tr:last-child td { background:#091520; font-weight:700; font-size:1.1em; }
+.saved-pct { color:var(--green); font-weight:800; font-size:1.15em; }
+.trad-val { color:#F87171; }
+.spec-val { color:var(--green); }
+
+/* ─── SLIDE 4 — WORKFLOW ─────────────────────────────────── */
+.workflow-row {
+  display:flex; align-items:stretch; gap:0;
+  margin-top:12px;
+}
+.step-box {
+  flex:1; background:var(--navy2);
+  border:1.5px solid var(--accent);
+  border-radius:12px;
+  padding:12px 6px 10px;
+  text-align:center;
+  position:relative;
+  transition: transform .25s;
+}
+.step-box:hover { transform:translateY(-4px); }
+.step-box.last-step { background:var(--accent); border-color:var(--green); }
+.step-box.last-step .step-label { color:var(--navy); }
+.step-box.last-step .step-sub { color:var(--navy); }
+
+.step-num {
+  width:28px; height:28px; border-radius:50%;
+  background:var(--accent); color:var(--navy);
+  font-size:.32em; font-weight:900;
+  display:flex; align-items:center; justify-content:center;
+  margin: 0 auto 6px;
+}
+.last-step .step-num { background:var(--navy); color:var(--accent); }
+
+.step-icon { font-size:.7em; line-height:1.2; }
+.step-label { font-size:.3em; font-weight:700; color:var(--white); margin-top:4px; }
+.step-sub { font-size:.24em; color:var(--midgray); font-style:italic; margin-top:3px; line-height:1.3; }
+.step-art { font-size:.22em; color:var(--accentAlt); margin-top:6px; line-height:1.3; }
+
+.arrow {
+  width:22px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--accent); font-size:.55em;
+}
+
+/* ─── SLIDE 5 — METRICS ──────────────────────────────────── */
+.metrics-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:14px; margin-top:8px;
+}
+.metric-card {
+  background:var(--navy2); border-radius:12px;
+  border-top: 4px solid var(--accent);
+  padding:14px 10px 12px; text-align:center;
+  transition: transform .2s;
+}
+.metric-card:hover { transform:scale(1.03); }
+.metric-card.green { border-color:var(--green); }
+.metric-card.green .metric-val { color:var(--green); }
+.metric-card.special { border-color:var(--green); }
+.metric-card.special .metric-val { color:var(--green); }
+.metric-val { font-size:1.4em; font-weight:900; color:var(--accent); line-height:1; }
+.metric-label { font-size:.32em; font-weight:600; color:var(--white); margin-top:7px; }
+.metric-sub { font-size:.25em; color:var(--midgray); font-style:italic; margin-top:3px; }
+
+/* ─── SLIDE 6 — ARCHITECTURE ─────────────────────────────── */
+.arch-outer {
+  border:2px solid var(--blue); border-radius:16px;
+  background:#EBF4FF; padding:14px 16px 12px;
+  position:relative; margin-top:8px;
+}
+.arch-browser-label {
+  font-size:.3em; font-weight:700; color:var(--blue);
+  margin-bottom:8px; letter-spacing:1px;
+}
+.arch-app-box {
+  border:1.5px solid var(--blue); border-radius:10px;
+  background:#DBEAFE; padding:10px 12px 8px;
+  margin-bottom:8px;
+}
+.arch-app-label { font-size:.27em; font-weight:700; color:var(--blue); margin-bottom:8px; }
+.arch-widgets { display:flex; gap:10px; }
+.arch-widget {
+  flex:1; background:#fff; border-radius:8px;
+  border:1.5px solid var(--blue); padding:8px 6px;
+  text-align:center;
+}
+.arch-widget-name { font-size:.27em; font-weight:700; color:var(--blue); }
+.arch-widget-detail { font-size:.22em; color:var(--darktext); font-style:italic; margin-top:3px; }
+
+.arch-services-box {
+  border:1.5px solid var(--green); border-radius:10px;
+  background:#F0FDF4; padding:8px 12px;
+  margin-bottom:8px;
+}
+.arch-svc-label { font-size:.27em; font-weight:700; color:var(--green); margin-bottom:6px; }
+.arch-svc-row { display:flex; gap:10px; }
+.arch-svc {
+  flex:1; background:#fff; border-radius:8px;
+  border:1.5px solid var(--green); padding:7px 8px;
+}
+.arch-svc-name { font-size:.27em; font-weight:700; color:var(--green); }
+.arch-svc-detail { font-size:.22em; color:var(--darktext); font-style:italic; }
+
+.arch-ls {
+  background:#FEF9C3; border:1.5px solid var(--amber);
+  border-radius:8px; padding:5px 12px;
+  font-size:.26em; color:#78350F; font-weight:700; text-align:center;
+}
+
+.arch-api-panel {
+  position:absolute; right:-2px; top:-2px;
+  width:24%; height:calc(100% + 4px);
+  background:var(--navy2); border:1.5px solid var(--accent);
+  border-radius:0 16px 16px 0;
+  padding:12px 10px; display:flex; flex-direction:column;
+  align-items:center; gap:10px;
+}
+.api-label { font-size:.26em; font-weight:700; color:var(--accent); letter-spacing:1.5px; text-align:center; }
+.api-card {
+  background:#091520; border:1px solid var(--accent);
+  border-radius:8px; padding:8px; text-align:center; width:100%;
+}
+.api-name { font-size:.26em; font-weight:700; color:var(--accent); }
+.api-detail { font-size:.22em; color:var(--white); font-style:italic; margin-top:3px; }
+
+/* ─── SLIDE 7 — CODE BREAKDOWN ───────────────────────────── */
+.bar-row {
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:14px;
+}
+.bar-label { width:160px; font-size:.32em; text-align:right; color:var(--white); flex-shrink:0; }
+.bar-track { flex:1; background:#0D2137; border-radius:6px; height:32px; overflow:hidden; position:relative; }
+.bar-fill {
+  height:100%; border-radius:6px;
+  transition: width 1.2s cubic-bezier(.4,0,.2,1);
+  width:0; /* animated in */
+}
+.bar-val { font-size:.3em; font-weight:700; flex-shrink:0; width:90px; }
+.bar-pct { font-size:.28em; color:var(--midgray); width:50px; }
+
+.files-panel {
+  background:var(--navy2); border:1px solid var(--accent);
+  border-radius:12px; padding:14px 16px;
+}
+.files-title { font-size:.3em; font-weight:700; color:var(--accent); letter-spacing:1px; margin-bottom:10px; }
+.file-row {
+  display:flex; gap:10px; align-items:flex-start;
+  padding:6px 0; border-bottom:1px solid rgba(255,255,255,.07);
+}
+.file-row:last-child { border-bottom:none; }
+.file-n { font-size:.3em; font-weight:700; color:var(--accent); width:28px; }
+.file-info { flex:1; }
+.file-name { font-size:.28em; font-weight:600; color:var(--white); }
+.file-detail { font-size:.24em; color:var(--midgray); font-style:italic; }
+
+/* ─── SLIDE 8 — QUALITY ──────────────────────────────────── */
+.quality-table { width:100%; border-collapse:collapse; font-size:.32em; margin-top:6px; }
+.quality-table th { background:var(--blue); color:#fff; padding:8px 12px; text-align:left; }
+.quality-table td { padding:7px 12px; border:1px solid #1E3A5F; background:var(--navy2); color:#fff; vertical-align:middle; }
+.quality-table tr:nth-child(even) td { background:#091a2e; }
+.pass-badge {
+  display:inline-flex; align-items:center; gap:4px;
+  background:rgba(16,185,129,.15); color:var(--green);
+  border-radius:6px; padding:2px 8px; font-weight:700;
+}
+
+.q-cols { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:12px; }
+.q-col { border-radius:12px; overflow:hidden; }
+.q-col-head {
+  padding:8px 14px; font-size:.34em; font-weight:700; color:#fff;
+}
+.q-col-body { padding:10px 14px; }
+.q-item { font-size:.28em; padding:5px 0; display:flex; gap:6px; }
+.q-check { color:var(--green); font-weight:700; }
+
+/* ─── SLIDE 9 — ROI ──────────────────────────────────────── */
+.roi-cols { display:grid; grid-template-columns:1fr 160px 1fr 220px; gap:12px; align-items:start; margin-top:8px; }
+.roi-box { border-radius:12px; overflow:hidden; }
+.roi-head { padding:10px 14px; font-size:.35em; font-weight:700; color:#fff; text-align:center; }
+.roi-body { padding:12px 14px; }
+.roi-item { font-size:.3em; padding:6px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+.roi-item:last-child { border-bottom:none; }
+.roi-total { font-size:.75em; font-weight:900; text-align:center; padding:10px 0 4px; }
+.roi-total-label { font-size:.28em; font-style:italic; text-align:center; }
+
+.savings-badge {
+  background:var(--navy2); border:2px solid var(--accent);
+  border-radius:14px; padding:16px 10px;
+  text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.savings-num { font-size:.95em; font-weight:900; color:var(--accent); line-height:1; }
+.savings-label { font-size:.27em; color:var(--midgray); font-style:italic; margin-top:4px; }
+.savings-pct { font-size:.55em; font-weight:900; color:var(--green); margin-top:6px; }
+.savings-mult { font-size:.3em; color:var(--white); margin-top:4px; }
+
+.scale-table { width:100%; border-collapse:collapse; font-size:.3em; }
+.scale-table th { background:var(--blue); color:#fff; padding:7px 10px; text-align:center; }
+.scale-table td { padding:6px 10px; border:1px solid #1E3A5F; background:var(--navy2); color:#fff; text-align:center; }
+.scale-table tr:nth-child(even) td { background:#0A1E32; }
+.scale-green { color:var(--green); font-weight:700; }
+
+/* ─── SLIDE 10 — DEMO ────────────────────────────────────── */
+.demo-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:8px; }
+.demo-card { border-radius:12px; overflow:hidden; transition:transform .2s; }
+.demo-card:hover { transform:translateY(-4px); }
+.demo-head { padding:8px 14px; font-size:.34em; font-weight:700; color:#fff; display:flex; gap:8px; align-items:center; }
+.demo-body { padding:10px 14px; font-size:.3em; color:var(--darktext); }
+.demo-time {
+  display:inline-block; background:rgba(255,255,255,.25);
+  border-radius:5px; padding:1px 7px; font-size:.8em;
+}
+.demo-body-dark { color:var(--white); background:var(--navy2); }
+
+/* ─── SLIDE 11 — ADOPTION ────────────────────────────────── */
+.phases { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:8px; }
+.phase-box { border-radius:12px; overflow:hidden; }
+.phase-head {
+  padding:10px 14px;
+  font-size:.36em; font-weight:700; color:#fff;
+}
+.phase-body { padding:12px 14px; background:var(--navy2); }
+.phase-time { font-size:.26em; font-style:italic; margin-bottom:8px; }
+.phase-item { font-size:.3em; padding:5px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+.phase-item:last-child { border-bottom:none; }
+
+.fit-table { width:100%; border-collapse:collapse; font-size:.3em; margin-top:12px; }
+.fit-table th { background:var(--blue); color:#fff; padding:6px 12px; text-align:left; }
+.fit-table td { padding:5px 12px; border:1px solid #1E3A5F; background:var(--navy2); color:#fff; }
+.fit-table tr:nth-child(even) td { background:#0A1E32; }
+
+/* ─── SLIDE 12 — CTA ─────────────────────────────────────── */
+.ask-list { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+.ask-row {
+  display:flex; align-items:flex-start; gap:14px;
+  background:var(--navy2); border-radius:12px; overflow:hidden;
+}
+.ask-badge {
+  width:54px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.5em; font-weight:900;
+}
+.ask-content { flex:1; padding:10px 16px 10px 0; }
+.ask-title { font-size:.35em; font-weight:700; margin-bottom:4px; }
+.ask-body { font-size:.29em; color:var(--white); line-height:1.5; }
+
+.plan-table { width:100%; border-collapse:collapse; font-size:.3em; margin-top:10px; }
+.plan-table th { background:var(--blue); color:#fff; padding:7px 12px; text-align:left; }
+.plan-table td { padding:6px 12px; border:1px solid #1E3A5F; background:var(--navy2); color:#fff; }
+.plan-table tr:nth-child(even) td { background:#0A1E32; }
+
+.closing-quote {
+  margin-top:10px;
+  padding:10px 18px;
+  border-left:4px solid var(--accent);
+  background:rgba(0,180,216,.06);
+  border-radius:0 10px 10px 0;
+  font-size:.32em; font-style:italic; color:var(--midgray);
+}
+
+/* ─── SLIDE PADDING ──────────────────────────────────────── */
+.sp { padding: 22px 32px 12px; box-sizing:border-box; height:100%; display:flex; flex-direction:column; }
+.sp-top { padding: 16px 32px 6px; }
+
+/* ─── REVEAL OVERRIDES ───────────────────────────────────── */
+.reveal h1, .reveal h2, .reveal h3 { text-transform:none; letter-spacing:normal; }
+.reveal .progress { color:var(--accent); }
+.reveal .controls button { color:var(--accent); }
+.reveal .slide-number { color:var(--accent); background:rgba(10,22,40,.6); }
+
+/* ─── ANIMATIONS ─────────────────────────────────────────── */
+@keyframes countUp {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes barGrow { from { width:0; } }
+@keyframes fadeSlideUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes pop {
+  0%   { transform:scale(.85); opacity:0; }
+  70%  { transform:scale(1.06); }
+  100% { transform:scale(1); opacity:1; }
+}
+@keyframes pulseRing {
+  0%   { box-shadow:0 0 0 0 rgba(0,180,216,.5); }
+  70%  { box-shadow:0 0 0 16px rgba(0,180,216,0); }
+  100% { box-shadow:0 0 0 0 rgba(0,180,216,0); }
+}
+
+.reveal .slides section.present .animate-up   { animation: fadeSlideUp .55s ease both; }
+.reveal .slides section.present .animate-pop  { animation: pop .45s ease both; }
+.reveal .slides section.present .kpi-card     { animation: pop .4s ease both; }
+.reveal .slides section.present .metric-card  { animation: fadeSlideUp .5s ease both; }
+.reveal .slides section.present .step-box     { animation: fadeSlideUp .5s ease both; }
+.reveal .slides section.present .demo-card    { animation: fadeSlideUp .4s ease both; }
+.reveal .slides section.present .phase-box    { animation: fadeSlideUp .45s ease both; }
+.reveal .slides section.present .ask-row      { animation: fadeSlideUp .4s ease both; }
+
+/* Stagger children */
+.stagger > *:nth-child(1) { animation-delay:.05s; }
+.stagger > *:nth-child(2) { animation-delay:.15s; }
+.stagger > *:nth-child(3) { animation-delay:.25s; }
+.stagger > *:nth-child(4) { animation-delay:.35s; }
+.stagger > *:nth-child(5) { animation-delay:.45s; }
+.stagger > *:nth-child(6) { animation-delay:.55s; }
+.stagger > *:nth-child(7) { animation-delay:.65s; }
+.stagger > *:nth-child(8) { animation-delay:.75s; }
+.stagger > *:nth-child(9) { animation-delay:.85s; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 1 — TITLE
+═══════════════════════════════════════════════════════════════ -->
+<section id="s1" class="slide-dark" data-transition="zoom">
+  <div class="left-panel">
+    <div class="logo-ring" style="animation:pulseRing 2s infinite">AI</div>
+    <div class="badge">ZERO-CODE DELIVERY</div>
+    <div class="big-title">From Idea to<br>Deployed App<br>in 4 Days</div>
+    <div class="sub-title">Without Writing a Single Line of Code</div>
+    <div class="presenter">Application Development Associate Manager<br>16 Years IT Experience<br>February 2026</div>
+  </div>
+  <div class="accent-bar"></div>
+  <div class="right-panel">
+    <div class="kpi-label">KEY RESULTS</div>
+    <div class="kpi-grid stagger">
+      <div class="kpi-card">
+        <div class="kpi-num">1,923</div>
+        <div class="kpi-title">Lines of Code Generated</div>
+        <div class="kpi-sub">TypeScript · CSS · HTML · Tests</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num">44/44</div>
+        <div class="kpi-title">Tests Passing</div>
+        <div class="kpi-sub">100% green on day one</div>
+      </div>
+      <div class="kpi-card" style="border-color:var(--green)">
+        <div class="kpi-num" style="color:var(--green)">4 Days</div>
+        <div class="kpi-title">End-to-End Delivery</div>
+        <div class="kpi-sub">Feb 16 → Feb 20, 2026</div>
+      </div>
+      <div class="kpi-card" style="border-color:var(--green)">
+        <div class="kpi-num" style="color:var(--green)">0</div>
+        <div class="kpi-title">Lines Written Manually</div>
+        <div class="kpi-sub">Zero. None. Not one.</div>
+      </div>
+    </div>
+    <div class="tech-bar">
+      Angular 17+ &nbsp;·&nbsp; TypeScript 5.4 &nbsp;·&nbsp; Vite 5 &nbsp;·&nbsp; Vitest &nbsp;·&nbsp; Open-Meteo API
+    </div>
+    <div class="audience">Audience: Associate Directors</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 2 — CHALLENGE & OPPORTUNITY
+═══════════════════════════════════════════════════════════════ -->
+<section id="s2" class="slide-light" data-transition="slide">
+  <div class="sp">
+    <div><span class="chip chip-light">The Problem &amp; Opportunity</span></div>
+    <div class="accent-line" style="background:linear-gradient(90deg,var(--blue),transparent)"></div>
+    <div class="slide-title slide-title-light">Traditional Development Has a Speed Problem</div>
+    <div class="two-col animate-up" style="position:relative; flex:1">
+      <div class="col-box" style="border:1.5px solid #F87171">
+        <div class="col-head" style="background:#C0392B">⚠&nbsp; THE PROBLEM</div>
+        <div class="col-body" style="background:#FFF1F2">
+          <div class="col-item" style="color:#B91C1C">✗ &nbsp;Requirements gathering takes 2–3 weeks of meetings and iteration</div>
+          <div class="col-item" style="color:#B91C1C">✗ &nbsp;A typical small feature takes 6–8 weeks from kick-off to production</div>
+          <div class="col-item" style="color:#B91C1C">✗ &nbsp;Dev effort dominated by boilerplate &amp; rework — not business logic</div>
+          <div class="col-item" style="color:#B91C1C">✗ &nbsp;Knowledge silos: only seniors can kick off new projects</div>
+          <div class="col-item" style="color:#B91C1C">✗ &nbsp;Context-switching creates gaps and bugs between stages</div>
+        </div>
+      </div>
+      <div class="col-box" style="border:1.5px solid #34D399">
+        <div class="col-head" style="background:#10B981">✦&nbsp; THE OPPORTUNITY</div>
+        <div class="col-body" style="background:#F0FDF4">
+          <div class="col-item" style="color:#065F46">✓ &nbsp;AI generates production-quality code from a precise specification</div>
+          <div class="col-item" style="color:#065F46">✓ &nbsp;Spec-Driven Development provides that precision — systematically</div>
+          <div class="col-item" style="color:#065F46">✓ &nbsp;One engineer delivers what previously needed a full squad</div>
+          <div class="col-item" style="color:#065F46">✓ &nbsp;At enterprise scale: <strong>10× delivery velocity</strong> across engagements</div>
+          <div class="col-item" style="color:#065F46">✓ &nbsp;<strong>$463,800 annual savings</strong> on just 10 projects per year</div>
+        </div>
+      </div>
+      <div class="vs-badge">VS</div>
+    </div>
+  </div>
+  <div class="footer">Spec-Driven Development Showcase · Feb 2026</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 3 — SDLC COMPARISON
+═══════════════════════════════════════════════════════════════ -->
+<section id="s3" class="slide-dark" data-transition="slide">
+  <div class="sp">
+    <div><span class="chip">Side-by-Side Comparison</span></div>
+    <div class="accent-line"></div>
+    <div class="slide-title">Same Feature. Two Worlds. <span style="color:var(--green)">93% Time Saved.</span></div>
+    <table class="compare-table animate-up" style="flex:1">
+      <thead>
+        <tr>
+          <th>PHASE</th>
+          <th class="trad-val">TRADITIONAL APPROACH</th>
+          <th class="spec-val">SPEC-DRIVEN APPROACH</th>
+          <th>TIME SAVED</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Requirements</strong></td>
+          <td class="trad-val">2–3 weeks<br><small>workshops, documents, sign-offs</small></td>
+          <td class="spec-val">2–3 hours<br><small>AI-guided spec + clarification</small></td>
+          <td class="saved-pct">~95%</td>
+        </tr>
+        <tr>
+          <td><strong>Design</strong></td>
+          <td class="trad-val">1–2 weeks<br><small>architecture docs, review cycles</small></td>
+          <td class="spec-val">1 day<br><small>AI generates plan + data model</small></td>
+          <td class="saved-pct">~87%</td>
+        </tr>
+        <tr>
+          <td><strong>Development</strong></td>
+          <td class="trad-val">6–8 weeks<br><small>manual coding, PR reviews</small></td>
+          <td class="spec-val">1–2 days<br><small>AI implements 65 tasks</small></td>
+          <td class="saved-pct">~96%</td>
+        </tr>
+        <tr>
+          <td><strong>Testing</strong></td>
+          <td class="trad-val">2–3 weeks<br><small>test writing, execution, bug fixes</small></td>
+          <td class="spec-val">Same day<br><small>44 smoke tests, all green</small></td>
+          <td class="saved-pct">~95%</td>
+        </tr>
+        <tr>
+          <td><strong>Deployment</strong></td>
+          <td class="trad-val">1 week<br><small>packaging, config, validation</small></td>
+          <td class="spec-val">Same day<br><small>Vite build, ready to deploy</small></td>
+          <td class="saved-pct">~86%</td>
+        </tr>
+        <tr>
+          <td><strong>TOTAL</strong></td>
+          <td style="color:#F87171;font-weight:800;font-size:1.1em">12–17 WEEKS</td>
+          <td style="color:var(--green);font-weight:800;font-size:1.1em">4 DAYS</td>
+          <td class="saved-pct" style="font-size:1.4em">~93%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="footer">Spec-Driven Development Showcase · Feb 2026</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 4 — 7-STEP WORKFLOW
+═══════════════════════════════════════════════════════════════ -->
+<section id="s4" class="slide-light" data-transition="convex">
+  <div class="sp">
+    <div><span class="chip chip-light">The Methodology</span></div>
+    <div class="accent-line" style="background:linear-gradient(90deg,var(--blue),transparent)"></div>
+    <div class="slide-title slide-title-light">A Repeatable, Governance-Ready Framework in 7 Steps</div>
+    <div class="workflow-row stagger" style="flex:0 0 auto">
+      <div class="step-box">
+        <div class="step-num">1</div>
+        <div class="step-icon">⚖️</div>
+        <div class="step-label">Constitution</div>
+        <div class="step-sub">Principles &amp; governance rules</div>
+        <div class="step-art">5 governance principles</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step-box">
+        <div class="step-num">2</div>
+        <div class="step-icon">📋</div>
+        <div class="step-label">Specification</div>
+        <div class="step-sub">User stories, FRs, success criteria</div>
+        <div class="step-art">4 user stories · 12 FRs · 7 SCs</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step-box">
+        <div class="step-num">3</div>
+        <div class="step-icon">🔍</div>
+        <div class="step-label">Clarification</div>
+        <div class="step-sub">5 targeted questions → no ambiguity</div>
+        <div class="step-art">5 ambiguities resolved</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step-box">
+        <div class="step-num">4</div>
+        <div class="step-icon">🏗️</div>
+        <div class="step-label">Planning</div>
+        <div class="step-sub">Architecture, data model, API contracts</div>
+        <div class="step-art">Architecture + data model</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step-box">
+        <div class="step-num">5</div>
+        <div class="step-icon">✅</div>
+        <div class="step-label">Task Breakdown</div>
+        <div class="step-sub">65 tasks, prioritised, TDD-first</div>
+        <div class="step-art">65 tasks · 7 phases</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step-box">
+        <div class="step-num">6</div>
+        <div class="step-icon">🤖</div>
+        <div class="step-label">Implementation</div>
+        <div class="step-sub">AI executes, runs &amp; validates tests</div>
+        <div class="step-art">1,923 lines · 44 tests</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step-box last-step">
+        <div class="step-num">7</div>
+        <div class="step-icon">🚀</div>
+        <div class="step-label">Working App ✓</div>
+        <div class="step-sub">Live, tested, version-controlled</div>
+        <div class="step-art" style="color:var(--navy)">Production-ready</div>
+      </div>
+    </div>
+
+    <!-- Constitution highlight -->
+    <div style="margin-top:18px; display:grid; grid-template-columns:repeat(5,1fr); gap:8px; flex:1">
+      <div style="background:var(--navy2); border:1px solid var(--accent); border-radius:8px; padding:8px 10px; text-align:center">
+        <div style="font-size:.28em; font-weight:700; color:var(--accent)">Prototype-First</div>
+        <div style="font-size:.22em; color:var(--midgray); margin-top:3px">P1 runs with zero network calls</div>
+      </div>
+      <div style="background:var(--navy2); border:1px solid var(--accent); border-radius:8px; padding:8px 10px; text-align:center">
+        <div style="font-size:.28em; font-weight:700; color:var(--accent)">Simplicity</div>
+        <div style="font-size:.22em; color:var(--midgray); margin-top:3px">No patterns before validation</div>
+      </div>
+      <div style="background:var(--navy2); border:1px solid var(--accent); border-radius:8px; padding:8px 10px; text-align:center">
+        <div style="font-size:.28em; font-weight:700; color:var(--accent)">Incremental Delivery</div>
+        <div style="font-size:.22em; color:var(--midgray); margin-top:3px">Each story demo-able independently</div>
+      </div>
+      <div style="background:var(--navy2); border:1px solid var(--accent); border-radius:8px; padding:8px 10px; text-align:center">
+        <div style="font-size:.28em; font-weight:700; color:var(--accent)">Smoke Testing</div>
+        <div style="font-size:.22em; color:var(--midgray); margin-top:3px">Happy path + one critical failure</div>
+      </div>
+      <div style="background:var(--navy2); border:1px solid var(--accent); border-radius:8px; padding:8px 10px; text-align:center">
+        <div style="font-size:.28em; font-weight:700; color:var(--accent)">Timebox &amp; Validate</div>
+        <div style="font-size:.22em; color:var(--midgray); margin-top:3px">Exit criteria for every story</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer" style="color:var(--midgray)">Spec-Driven Development Showcase · Feb 2026</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 5 — PROJECT METRICS
+═══════════════════════════════════════════════════════════════ -->
+<section id="s5" class="slide-dark" data-transition="slide">
+  <div class="sp">
+    <div><span class="chip">Delivery Metrics</span></div>
+    <div class="accent-line"></div>
+    <div class="slide-title">What Was Delivered: <span style="color:var(--accent)">Real Numbers, Real Application</span></div>
+    <div class="metrics-grid stagger" style="flex:1">
+      <div class="metric-card">
+        <div class="metric-val">1,923</div>
+        <div class="metric-label">Lines of Code</div>
+        <div class="metric-sub">src + tests</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">21</div>
+        <div class="metric-label">Files Created</div>
+        <div class="metric-sub">components, services, config</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">4</div>
+        <div class="metric-label">Angular Components</div>
+        <div class="metric-sub">standalone, no NgModule</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">4</div>
+        <div class="metric-label">User Stories</div>
+        <div class="metric-sub">P1 → P4, all delivered</div>
+      </div>
+      <div class="metric-card green">
+        <div class="metric-val">44/44</div>
+        <div class="metric-label">Tests Passing</div>
+        <div class="metric-sub">100% green on day one</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">2</div>
+        <div class="metric-label">External APIs</div>
+        <div class="metric-sub">Open-Meteo (free, no auth)</div>
+      </div>
+      <div class="metric-card green">
+        <div class="metric-val">65</div>
+        <div class="metric-label">Tasks Completed</div>
+        <div class="metric-sub">0 skipped, 0 deferred</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">4</div>
+        <div class="metric-label">Calendar Days</div>
+        <div class="metric-sub">Feb 16 → Feb 20, 2026</div>
+      </div>
+      <div class="metric-card special">
+        <div class="metric-val">0</div>
+        <div class="metric-label">Lines Written Manually</div>
+        <div class="metric-sub">Zero. None.</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">Spec-Driven Development Showcase · Feb 2026</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 6 — TECHNICAL ARCHITECTURE
+═══════════════════════════════════════════════════════════════ -->
+<section id="s6" class="slide-light" data-transition="slide">
+  <div class="sp">
+    <div><span class="chip chip-light">Technical Architecture</span></div>
+    <div class="accent-line" style="background:linear-gradient(90deg,var(--blue),transparent)"></div>
+    <div class="slide-title slide-title-light">Modern, Clean Architecture — Generated End-to-End</div>
+    <div style="display:flex; gap:14px; flex:1">
+      <div style="flex:1">
+        <div class="arch-outer animate-up">
+          <div class="arch-browser-label">🌐 BROWSER — Angular 17+ SPA</div>
+          <div class="arch-app-box">
+            <div class="arch-app-label">AppComponent — CSS Grid Layout (responsive 320px → 2560px)</div>
+            <div class="arch-widgets">
+              <div class="arch-widget">
+                <div class="arch-widget-name">⏱ TimeWidget</div>
+                <div class="arch-widget-detail">Signals ×5<br>setInterval + cleanup</div>
+              </div>
+              <div class="arch-widget">
+                <div class="arch-widget-name">🌤 WeatherWidget</div>
+                <div class="arch-widget-detail">Signals ×6<br>6-state FSM</div>
+              </div>
+              <div class="arch-widget">
+                <div class="arch-widget-name">💬 QuoteWidget</div>
+                <div class="arch-widget-detail">Signals ×3<br>computed()</div>
+              </div>
+            </div>
+          </div>
+          <div class="arch-services-box">
+            <div class="arch-svc-label">Services Layer</div>
+            <div class="arch-svc-row">
+              <div class="arch-svc">
+                <div class="arch-svc-name">WeatherService</div>
+                <div class="arch-svc-detail">geocodeCity() · fetchWeather()<br>60-min localStorage cache</div>
+              </div>
+              <div class="arch-svc">
+                <div class="arch-svc-name">QuoteService</div>
+                <div class="arch-svc-detail">getTodaysQuote()<br>day-of-year selection, date cache</div>
+              </div>
+            </div>
+          </div>
+          <div class="arch-ls">📦 localStorage &nbsp;·&nbsp; 3 keys: weather_cache &nbsp;·&nbsp; last_location &nbsp;·&nbsp; quote_cache</div>
+          <div class="arch-api-panel">
+            <div class="api-label">EXTERNAL APIs<br><span style="font-size:.8em;color:var(--midgray);font-style:italic">Free · No Auth · HTTPS</span></div>
+            <div class="api-card">
+              <div class="api-name">Open-Meteo<br>Weather API</div>
+              <div class="api-detail">Current conditions<br>Temp, wind, humidity</div>
+            </div>
+            <div class="api-card">
+              <div class="api-name">Open-Meteo<br>Geocoding API</div>
+              <div class="api-detail">City → lat/lon<br>resolution</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="width:230px; display:flex; flex-direction:column; gap:8px">
+        <div style="background:var(--navy2); border:1px solid var(--accent); border-radius:10px; padding:10px 12px">
+          <div style="font-size:.27em; font-weight:700; color:var(--accent); margin-bottom:8px">TECH DECISIONS</div>
+          <div style="font-size:.25em; color:var(--white); line-height:1.8">
+            <strong style="color:var(--accent)">Framework:</strong> Angular 17+ Standalone<br>
+            <strong style="color:var(--accent)">Build:</strong> Vite 5 (fastest HMR)<br>
+            <strong style="color:var(--accent)">Tests:</strong> Vitest (native Vite)<br>
+            <strong style="color:var(--accent)">State:</strong> Angular Signals<br>
+            <strong style="color:var(--accent)">Storage:</strong> Browser localStorage<br>
+            <strong style="color:var(--accent)">APIs:</strong> Open-Meteo (free)<br>
+            <strong style="color:var(--accent)">CSS:</strong> Vanilla — no framework
+          </div>
+        </div>
+        <div style="background:var(--navy2); border:1px solid var(--green); border-radius:10px; padding:10px 12px">
+          <div style="font-size:.27em; font-weight:700; color:var(--green); margin-bottom:6px">ZERO INFRASTRUCTURE</div>
+          <div style="font-size:.25em; color:var(--white); line-height:1.8">
+            No backend<br>No database<br>No authentication<br>No DevOps needed<br>
+            <strong style="color:var(--green)">Cost: $0/month</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer" style="color:var(--midgray)">Spec-Driven Development Showcase · Feb 2026</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 7 — CODE BREAKDOWN
+═══════════════════════════════════════════════════════════════ -->
+<section id="s7" class="slide-dark" data-transition="slide">
+  <div class="sp">
+    <div><span class="chip">Code Breakdown</span></div>
+    <div class="accent-line"></div>
+    <div class="slide-title"><span style="color:var(--accent)">1,923 Lines</span> of Code — Zero Written by Hand</div>
+    <div style="display:grid; grid-template-columns:1fr 300px; gap:20px; flex:1">
+      <div style="display:flex; flex-direction:column; justify-content:center">
+        <div class="bar-row animate-up">
+          <div class="bar-label">TypeScript (src)</div>
+          <div class="bar-track"><div class="bar-fill" style="width:35.8%; background:#3B82F6" data-width="35.8%"></div></div>
+          <div class="bar-val" style="color:#3B82F6">688 lines</div>
+          <div class="bar-pct">35.8%</div>
+        </div>
+        <div class="bar-row animate-up" style="animation-delay:.1s">
+          <div class="bar-label">CSS (src)</div>
+          <div class="bar-track"><div class="bar-fill" style="width:30.7%; background:var(--accent)" data-width="30.7%"></div></div>
+          <div class="bar-val" style="color:var(--accent)">591 lines</div>
+          <div class="bar-pct">30.7%</div>
+        </div>
+        <div class="bar-row animate-up" style="animation-delay:.2s">
+          <div class="bar-label">Test Specs</div>
+          <div class="bar-track"><div class="bar-fill" style="width:26.7%; background:var(--green)" data-width="26.7%"></div></div>
+          <div class="bar-val" style="color:var(--green)">514 lines</div>
+          <div class="bar-pct">26.7%</div>
+        </div>
+        <div class="bar-row animate-up" style="animation-delay:.3s">
+          <div class="bar-label">HTML Templates</div>
+          <div class="bar-track"><div class="bar-fill" style="width:6.8%; background:var(--amber)" data-width="6.8%"></div></div>
+          <div class="bar-val" style="color:var(--amber)">130 lines</div>
+          <div class="bar-pct">6.8%</div>
+        </div>
+        <div style="border-top:2px solid rgba(0,180,216,.3); margin-top:12px; padding-top:10px; font-size:.35em; font-weight:700; color:var(--accent); text-align:center">
+          TOTAL: 1,923 lines across 21 files — 100% AI-generated
+        </div>
+        <!-- Spec artifacts -->
+        <div style="background:rgba(16,185,129,.07); border:1px solid var(--green); border-radius:10px; padding:10px 14px; margin-top:12px">
+          <div style="font-size:.28em; font-weight:700; color:var(--green); margin-bottom:6px">+ Spec Artifacts Generated (not in code count)</div>
+          <div style="font-size:.24em; color:var(--midgray); line-height:1.7">
+            constitution.md 178L &nbsp;·&nbsp; spec.md 237L &nbsp;·&nbsp; plan.md 290+L &nbsp;·&nbsp; tasks.md 300+L &nbsp;·&nbsp; data-model.md 170L
+          </div>
+        </div>
+      </div>
+      <div class="files-panel animate-up">
+        <div class="files-title">TOP 5 LARGEST FILES</div>
+        <div class="file-row">
+          <div class="file-n">#1</div>
+          <div class="file-info">
+            <div class="file-name">weather-widget.component.css</div>
+            <div class="file-detail">235L · Skeleton shimmer, state styles, hover effects</div>
+          </div>
+        </div>
+        <div class="file-row">
+          <div class="file-n">#2</div>
+          <div class="file-info">
+            <div class="file-name">weather-widget.component.ts</div>
+            <div class="file-detail">216L · 6-state FSM, geolocation, caching</div>
+          </div>
+        </div>
+        <div class="file-row">
+          <div class="file-n">#3</div>
+          <div class="file-info">
+            <div class="file-name">weather.service.ts</div>
+            <div class="file-detail">163L · API calls, 60-min cache, WMO codes</div>
+          </div>
+        </div>
+        <div class="file-row">
+          <div class="file-n">#4</div>
+          <div class="file-info">
+            <div class="file-name">quote.service.ts</div>
+            <div class="file-detail">152L · 64 quotes, day-of-year selection</div>
+          </div>
+        </div>
+        <div class="file-row">
+          <div class="file-n">#5</div>
+          <div class="file-info">
+            <div class="file-name">quote-widget.smoke.spec.ts</div>
+            <div class="file-detail">145L · 44 total tests across 4 files</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">Spec-Driven Development Showcase · Feb 2026</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 8 — QUALITY & STANDARDS
+═══════════════════════════════════════════════════════════════ -->
+<section id="s8" class="slide-light" data-transition="slide">
+  <div class="sp">
+    <div><span class="chip chip-light">Quality &amp; Standards</span></div>
+    <div class="accent-line" style="background:linear-gradient(90deg,var(--blue),transparent)"></div>
+    <div class="slide-title slide-title-light">Built-In Quality — <span style="color:var(--blue)">Not Bolted On</span></div>
+    <table class="quality-table animate-up">
+      <thead>
+        <tr><th>PRINCIPLE</th><th>GATE QUESTION</th><th>RESULT</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Prototype-First</strong></td>
+          <td>Can P1 (Time Widget) run with zero network calls?</td>
+          <td><span class="pass-badge">✅ PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Prototype-First</strong></td>
+          <td>Initial implementation completable in one session?</td>
+          <td><span class="pass-badge">✅ PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Simplicity</strong></td>
+          <td>No architectural patterns before validation? (No NgRx, no event buses)</td>
+          <td><span class="pass-badge">✅ PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Incremental Delivery</strong></td>
+          <td>Each story independently demo-able? (US1→clock, US2→weather…)</td>
+          <td><span class="pass-badge">✅ PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Smoke Testing</strong></td>
+          <td>Tests limited to happy path + one critical failure? (44 tests)</td>
+          <td><span class="pass-badge">✅ PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Timebox &amp; Validate</strong></td>
+          <td>Exit criteria defined for each story?</td>
+          <td><span class="pass-badge">✅ PASS</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="q-cols animate-up" style="flex:1">
+      <div class="q-col" style="border:1.5px solid #1D4ED8">
+        <div class="q-col-head" style="background:#1D4ED8">♿ Accessibility (WCAG AA)</div>
+        <div class="q-col-body" style="background:#F0F6FF">
+          <div class="q-item"><span class="q-check">✓</span><span style="color:var(--darktext)">role="timer" + aria-label (screen reader)</span></div>
+          <div class="q-item"><span class="q-check">✓</span><span style="color:var(--darktext)">:focus-visible on all interactive elements</span></div>
+          <div class="q-item"><span class="q-check">✓</span><span style="color:var(--darktext)">@media prefers-reduced-motion respected</span></div>
+          <div class="q-item"><span class="q-check">✓</span><span style="color:var(--darktext)">WCAG AA color contrast verified</span></div>
+        </div>
+      </div>
+      <div class="q-col" style="border:1.5px solid var(--green)">
+        <div class="q-col-head" style="background:var(--green)">🛡️ Error Resilience</div>
+        <div class="q-col-body" style="background:#F0FDF4">
+          <div class="q-item"><span class="q-check">✓</span><span style="color:var(--darktext)">All localStorage reads in try/catch</span></div>
+          <div class="q-item"><span class="q-check">✓</span><span style="color:var(--darktext)">Widget failures isolated — no cascade</span></div>
+          <div class="q-item"><span class="q-check">✓</span><span style="color:var(--darktext)">6-state FSM for WeatherWidget</span></div>
+          <div class="q-item"><span class="q-check">✓</span><span style="color:var(--darktext)">Stale cache fallback for offline</span></div>
+        </div>
+      </div>
+      <div class="q-col" style="border:1.5px solid #7C3AED">
+        <div class="q-col-head" style="background:#7C3AED">📐 Code Standards</div>
+        <div class="q-col-body" style="background:#F5F3FF">
+          <div class="q-item"><span class="q-check" style="color:#7C3AED">✓</span><span style="color:var(--darktext)">TypeScript strict typing throughout</span></div>
+          <div class="q-item"><span class="q-check" style="color:#7C3AED">✓</span><span style="color:var(--darktext)">No "any" types in any source file</span></div>
+          <div class="q-item"><span class="q-check" style="color:#7C3AED">✓</span><span style="color:var(--darktext)">No debug logs in production (T062)</span></div>
+          <div class="q-item"><span class="q-check" style="color:#7C3AED">✓</span><span style="color:var(--darktext)">Zero dead code, no unused imports</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer" style="color:var(--midgray)">Spec-Driven Development Showcase · Feb 2026</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 9 — ROI ANALYSIS
+═══════════════════════════════════════════════════════════════ -->
+<section id="s9" class="slide-dark" data-transition="slide">
+  <div class="sp">
+    <div><span class="chip">ROI Analysis</span></div>
+    <div class="accent-line"></div>
+    <div class="slide-title">The Business Case: <span style="color:var(--green)">96.6% Cost Reduction</span> Per Project</div>
+    <div class="roi-cols animate-up" style="flex:1">
+      <!-- Traditional -->
+      <div class="roi-box" style="border:2px solid #C0392B">
+        <div class="roi-head" style="background:#C0392B">TRADITIONAL APPROACH</div>
+        <div class="roi-body" style="background:#2D0A08">
+          <div class="roi-item" style="color:#F87171">▸ Team: 1 Tech Lead + 2 Developers</div>
+          <div class="roi-item" style="color:#F87171">▸ Duration: 8 weeks (320 hrs/person)</div>
+          <div class="roi-item" style="color:#F87171">▸ Total Effort: 960 person-hours</div>
+          <div class="roi-item" style="color:#F87171">▸ Blended Rate: $50/hr (offshore)</div>
+          <div class="roi-total" style="color:#F87171">$48,000</div>
+          <div class="roi-total-label" style="color:#F87171">Total Cost</div>
+        </div>
+      </div>
+      <!-- Savings -->
+      <div class="savings-badge animate-pop">
+        <div class="savings-num">$46,380</div>
+        <div class="savings-label">saved per project</div>
+        <div class="savings-pct">96.6%</div>
+        <div class="savings-mult">cost reduction</div>
+        <div style="margin-top:8px; font-size:.28em; color:var(--accent); font-weight:700">30× productivity<br>multiplier</div>
+      </div>
+      <!-- Spec-Driven -->
+      <div class="roi-box" style="border:2px solid var(--green)">
+        <div class="roi-head" style="background:var(--green)">SPEC-DRIVEN APPROACH</div>
+        <div class="roi-body" style="background:#0A2018">
+          <div class="roi-item" style="color:var(--green)">▸ Team: 1 Developer</div>
+          <div class="roi-item" style="color:var(--green)">▸ Duration: 4 days (32 hours)</div>
+          <div class="roi-item" style="color:var(--green)">▸ Total Effort: 32 person-hours</div>
+          <div class="roi-item" style="color:var(--green)">▸ Claude Code: ~$20/month</div>
+          <div class="roi-total" style="color:var(--green)">$1,620</div>
+          <div class="roi-total-label" style="color:var(--green)">Total Cost</div>
+        </div>
+      </div>
+      <!-- Scale table -->
+      <div>
+        <div style="font-size:.3em; font-weight:700; color:var(--accent); margin-bottom:8px; letter-spacing:1px">ENTERPRISE SCALE PROJECTION</div>
+        <table class="scale-table">
+          <thead>
+            <tr><th>Projects/Yr</th><th>Traditional</th><th>Spec-Driven</th><th>Savings</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>5</td><td>$240,000</td><td>$8,100</td><td class="scale-green">$231,900</td></tr>
+            <tr><td>10</td><td>$480,000</td><td>$16,200</td><td class="scale-green">$463,800</td></tr>
+            <tr><td>20</td><td>$960,000</td><td>$32,400</td><td class="scale-green">$927,600</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:10px; background:rgba(0,180,216,.08); border:1px solid var(--accent); border-radius:8px; padding:8px 12px">
+          <div style="font-size:.26em; color:var(--accent); font-weight:700; margin-bottom:4px">Additional Value (Not Counted Above)</div>
+          <div style="font-size:.24em; color:var(--midgray); line-height:1.6">
+            ✓ Full audit trail at no extra cost<br>
+            ✓ 93% faster time-to-market<br>
+            ✓ Framework reusable: Angular, .NET, React, Node.js<br>
+            ✓ Tool cost: $20/month per developer
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">Spec-Driven Development Showcase · Feb 2026</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 10 — LIVE DEMO FLOW
+═══════════════════════════════════════════════════════════════ -->
+<section id="s10" class="slide-light" data-transition="convex">
+  <div class="sp">
+    <div><span class="chip chip-light">Live Demo</span></div>
+    <div class="accent-line" style="background:linear-gradient(90deg,var(--blue),transparent)"></div>
+    <div class="slide-title slide-title-light">See It Running — Live, Right Now &nbsp;<span style="color:var(--blue);font-size:.65em">(10 min demo)</span></div>
+    <div class="demo-grid stagger" style="flex:1">
+      <div class="demo-card" style="border:1.5px solid #1D4ED8">
+        <div class="demo-head" style="background:#1D4ED8">▶ &nbsp;The Running App <span class="demo-time">0:00–1:00</span></div>
+        <div class="demo-body" style="background:#EFF6FF; color:var(--darktext)">Live clock ticking · real weather for Chennai · today's quote · responsive resize demo (3 cols → 1 col)</div>
+      </div>
+      <div class="demo-card" style="border:1.5px solid #0369A1">
+        <div class="demo-head" style="background:#0369A1">📋 &nbsp;Spec Artifacts <span class="demo-time">1:00–3:00</span></div>
+        <div class="demo-body" style="background:#F0F9FF; color:var(--darktext)">spec.md → 4 user stories · plan.md → all gates green · tasks.md → 65/65 ticked complete</div>
+      </div>
+      <div class="demo-card" style="border:1.5px solid #047857">
+        <div class="demo-head" style="background:#047857">💻 &nbsp;Code Quality <span class="demo-time">3:00–5:30</span></div>
+        <div class="demo-body" style="background:#F0FDF4; color:var(--darktext)">WeatherService TS interfaces · 6-state FSM · skeleton shimmer CSS · prefers-reduced-motion</div>
+      </div>
+      <div class="demo-card" style="border:1.5px solid var(--green)">
+        <div class="demo-head" style="background:var(--green)">✅ &nbsp;44 Green Tests <span class="demo-time">5:30–7:00</span></div>
+        <div class="demo-body" style="background:#F0FDF4; color:var(--darktext)">npm test → 44 pass in seconds · TDD: tests written first, then code · readable assertions</div>
+      </div>
+      <div class="demo-card" style="border:1.5px solid #B45309">
+        <div class="demo-head" style="background:#B45309">📡 &nbsp;Offline Scenario <span class="demo-time">7:00–8:00</span></div>
+        <div class="demo-body" style="background:#FFFBEB; color:var(--darktext)">DevTools → offline · Time widget works · Quote cached · Weather graceful fallback · no crash</div>
+      </div>
+      <div class="demo-card" style="border:1.5px solid #7C3AED">
+        <div class="demo-head" style="background:#7C3AED">⚖️ &nbsp;Constitution + Q&A <span class="demo-time">8:00–10:00</span></div>
+        <div class="demo-body" style="background:#F5F3FF; color:var(--darktext)">constitution.md · 5 governance principles · AI followed every rule on every task</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer" style="color:var(--midgray)">Spec-Driven Development Showcase · Feb 2026</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 11 — ENTERPRISE ADOPTION
+═══════════════════════════════════════════════════════════════ -->
+<section id="s11" class="slide-dark" data-transition="slide">
+  <div class="sp">
+    <div><span class="chip">Adoption Strategy</span></div>
+    <div class="accent-line"></div>
+    <div class="slide-title">From Pilot to Practice: <span style="color:var(--accent)">Scaling in 90 Days</span></div>
+    <div class="phases stagger" style="flex:0 0 auto">
+      <div class="phase-box" style="border:2px solid var(--accent)">
+        <div class="phase-head" style="background:var(--accent);color:var(--navy)">PHASE 1 — VALIDATE</div>
+        <div class="phase-body">
+          <div class="phase-time" style="color:var(--accent)">Now → 30 days</div>
+          <div class="phase-item">▸ Share methodology with 2–3 trusted peers on current accounts</div>
+          <div class="phase-item">▸ Run one small internal tool using Spec-Driven Development</div>
+          <div class="phase-item">▸ Gather time/quality metrics vs. traditional baseline</div>
+          <div class="phase-item">▸ Document lessons for India Innovation team</div>
+        </div>
+      </div>
+      <div class="phase-box" style="border:2px solid var(--green)">
+        <div class="phase-head" style="background:var(--green)">PHASE 2 — PILOT</div>
+        <div class="phase-body">
+          <div class="phase-time" style="color:var(--green)">30–60 days</div>
+          <div class="phase-item">▸ Select 2 client projects with well-defined scope</div>
+          <div class="phase-item">▸ Train 3–5 developers on the 7-step workflow</div>
+          <div class="phase-item">▸ Measure: delivery speed, defect rate, client satisfaction</div>
+          <div class="phase-item">▸ Submit to Innovation Awards</div>
+        </div>
+      </div>
+      <div class="phase-box" style="border:2px solid var(--amber)">
+        <div class="phase-head" style="background:var(--amber)">PHASE 3 — SCALE</div>
+        <div class="phase-body">
+          <div class="phase-time" style="color:var(--amber)">60–90 days</div>
+          <div class="phase-item">▸ Develop organization-specific constitution template</div>
+          <div class="phase-item">▸ Create spec templates for Angular SPA, .NET API, React</div>
+          <div class="phase-item">▸ Integrate into Delivery Excellence / MyWizard toolchain</div>
+          <div class="phase-item">▸ Train associate-level developers — democratise delivery</div>
+        </div>
+      </div>
+    </div>
+    <table class="fit-table animate-up" style="margin-top:14px">
+      <thead>
+        <tr><th>Project Type</th><th>Fit Score</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Internal dashboards &amp; tools</td><td style="color:var(--amber)">★★★★★ Best fit</td></tr>
+        <tr><td>Client-facing SPAs &nbsp;·&nbsp; REST API microservices</td><td style="color:var(--green)">★★★★ Excellent</td></tr>
+        <tr><td>Mobile apps (Ionic / React Native)</td><td style="color:var(--accentAlt)">★★★ Good</td></tr>
+        <tr><td>Legacy modernisation</td><td style="color:var(--midgray)">★★ Greenfield modules within legacy</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="footer">Spec-Driven Development Showcase · Feb 2026</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 12 — CALL TO ACTION
+═══════════════════════════════════════════════════════════════ -->
+<section id="s12" class="slide-dark" data-transition="zoom">
+  <div style="position:absolute;left:0;top:0;width:6px;height:100%;background:var(--accent)"></div>
+  <div class="sp" style="padding-left:38px">
+    <div><span class="chip">Next Steps &amp; Call to Action</span></div>
+    <div class="accent-line"></div>
+    <div class="slide-title">Three Things I'm Asking For Today</div>
+    <div class="ask-list stagger" style="flex:0 0 auto">
+      <div class="ask-row">
+        <div class="ask-badge" style="background:var(--accent); color:var(--navy); width:64px">#1</div>
+        <div class="ask-content">
+          <div class="ask-title" style="color:var(--accent)">ENDORSEMENT</div>
+          <div class="ask-body">Endorse a formal pilot on one small client project in the next 30 days. Success metric: deliver same scope in ≤25% of the estimated time.</div>
+        </div>
+      </div>
+      <div class="ask-row">
+        <div class="ask-badge" style="background:var(--green); color:var(--navy); width:64px">#2</div>
+        <div class="ask-content">
+          <div class="ask-title" style="color:var(--green)">VISIBILITY</div>
+          <div class="ask-body">Connect this work with the Innovation team for an innovation case study. Positions our practice as early AI delivery adopter.</div>
+        </div>
+      </div>
+      <div class="ask-row">
+        <div class="ask-badge" style="background:var(--amber); color:var(--navy); width:64px">#3</div>
+        <div class="ask-content">
+          <div class="ask-title" style="color:var(--amber)">INVESTMENT</div>
+          <div class="ask-body">Approve Claude Code licences for 5 developers — 3-month pilot. Cost: <strong style="color:var(--amber)">~$500 total</strong>. Projected return: <strong style="color:var(--green)">$46,380+ on the first project alone</strong>.</div>
+        </div>
+      </div>
+    </div>
+    <table class="plan-table animate-up" style="margin-top:10px">
+      <thead>
+        <tr><th>Timeframe</th><th>Action</th><th>Success Metric</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Day 1–30</td><td>Share methodology, identify pilot project</td><td style="color:var(--accent)">Pilot project signed off</td></tr>
+        <tr><td>Day 30–60</td><td>Execute pilot, measure results</td><td style="color:var(--green)">Delivered on time, metrics captured</td></tr>
+        <tr><td>Day 60–90</td><td>Present results, expand to 3 projects</td><td style="color:var(--amber)">3 teams trained, 3 projects running</td></tr>
+      </tbody>
+    </table>
+    <div class="closing-quote">
+      "The best way to predict the future is to build it." — Alan Kay &nbsp;·&nbsp;
+      <em>The technology works. The methodology is documented. The results are real and sitting on this laptop right now.</em>
+    </div>
+  </div>
+  <div class="footer">Spec-Driven Development Showcase · Feb 2026</div>
+</section>
+
+</div><!-- /.slides -->
+</div><!-- /.reveal -->
+
+<!-- Reveal.js + Plugins -->
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/zoom/zoom.js"></script>
+
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  progress: true,
+  controls: true,
+  center: false,
+  transition: 'slide',
+  transitionSpeed: 'fast',
+  backgroundTransition: 'fade',
+  width: 1280,
+  height: 720,
+  margin: 0.04,
+  plugins: [ RevealNotes, RevealZoom ],
+});
+
+// Animate bars when slide becomes active
+Reveal.on('slidechanged', ({ currentSlide }) => {
+  if (!currentSlide) return;
+  // Bar chart animation
+  currentSlide.querySelectorAll('.bar-fill').forEach(bar => {
+    const target = bar.style.width;
+    bar.style.width = '0';
+    requestAnimationFrame(() => {
+      setTimeout(() => { bar.style.width = target; }, 50);
+    });
+  });
+});
+
+// Also trigger on first load if landing on a bar slide
+Reveal.on('ready', ({ currentSlide }) => {
+  if (!currentSlide) return;
+  currentSlide.querySelectorAll('.bar-fill').forEach(bar => {
+    const target = bar.style.width;
+    bar.style.width = '0';
+    setTimeout(() => { bar.style.width = target; }, 300);
+  });
+});
+</script>
+</body>
+</html>
