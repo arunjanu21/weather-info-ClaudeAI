@@ -1,15 +1,19 @@
 .widget-card {
-  background: var(--color-surface, #ffffff);
+  background: var(--color-surface, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.15));
   border-radius: var(--radius-lg, 12px);
   padding: var(--spacing-lg, 24px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 24px var(--color-shadow, rgba(131, 56, 236, 0.3));
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   animation: fade-slide-up 0.3s ease-out;
 }
 
 .widget-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 40px rgba(58, 134, 255, 0.4);
+  border-color: rgba(58, 134, 255, 0.4);
 }
 
 .widget-content {
@@ -24,7 +28,7 @@
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.05em;
-  color: var(--color-text-primary, #1a1a1a);
+  color: var(--color-text-primary, #ffffff);
   line-height: 1;
 }
 
@@ -38,12 +42,12 @@
 .day-of-week {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--color-text-secondary, #666666);
+  color: var(--color-text-secondary, rgba(255, 255, 255, 0.6));
 }
 
 .date-label {
   font-size: 1rem;
-  color: var(--color-text-secondary, #999999);
+  color: var(--color-text-secondary, rgba(255, 255, 255, 0.6));
 }
 
 /* Responsive adjustments */
