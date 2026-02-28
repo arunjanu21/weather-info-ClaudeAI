@@ -51,7 +51,7 @@
 .quote-mark {
   font-size: 3rem;
   line-height: 0.8;
-  color: var(--color-accent, #1976d2);
+  color: var(--color-accent, var(--color-accent, #5b7fa6));
   font-family: Georgia, serif;
   opacity: 0.4;
   user-select: none;
@@ -72,7 +72,7 @@
   margin-left: 0.25rem;
   background: none;
   border: none;
-  color: #1976d2;
+  color: var(--color-accent, #5b7fa6);
   font-size: var(--font-size-sm);
   font-family: var(--font-family);
   font-style: normal;
@@ -83,11 +83,11 @@
 }
 
 .read-more-btn:hover {
-  color: #1565c0;
+  color: var(--color-accent-hover, #4a6a8a);
 }
 
 .read-more-btn:focus-visible {
-  outline: 2px solid #1976d2;
+  outline: 2px solid var(--color-accent, #5b7fa6);
   outline-offset: 2px;
   border-radius: 2px;
 }

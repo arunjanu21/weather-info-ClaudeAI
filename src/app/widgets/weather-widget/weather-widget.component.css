@@ -111,7 +111,7 @@
 
 .stale-warning {
   font-size: var(--font-size-sm);
-  color: #e65100;
+  color: #a05c28;
   margin-top: 0.25rem;
 }
 
@@ -154,12 +154,12 @@
 }
 
 .city-input:focus {
-  border-color: #1976d2;
+  border-color: var(--color-accent, #5b7fa6);
 }
 
 .city-submit {
   padding: 0.5rem var(--spacing-sm);
-  background: #1976d2;
+  background: var(--color-accent, #5b7fa6);
   color: #ffffff;
   border: none;
   border-radius: var(--radius-sm);
@@ -171,17 +171,17 @@
 }
 
 .city-submit:hover {
-  background: #1565c0;
+  background: var(--color-accent-hover, #4a6a8a);
 }
 
 .city-submit:focus-visible {
-  outline: 2px solid #1976d2;
+  outline: 2px solid var(--color-accent, #5b7fa6);
   outline-offset: 2px;
 }
 
 .city-error {
   font-size: var(--font-size-sm);
-  color: #c62828;
+  color: #9e3030;
 }
 
 /* --- Error state --- */
@@ -205,8 +205,8 @@
 .retry-btn {
   padding: 0.5rem var(--spacing-md);
   background: transparent;
-  color: #1976d2;
-  border: 1px solid #1976d2;
+  color: var(--color-accent, #5b7fa6);
+  border: 1px solid var(--color-accent, #5b7fa6);
   border-radius: var(--radius-sm);
   font-size: var(--font-size-sm);
   font-family: var(--font-family);
@@ -215,12 +215,12 @@
 }
 
 .retry-btn:hover {
-  background: #1976d2;
+  background: var(--color-accent, #5b7fa6);
   color: #ffffff;
 }
 
 .retry-btn:focus-visible {
-  outline: 2px solid #1976d2;
+  outline: 2px solid var(--color-accent, #5b7fa6);
   outline-offset: 2px;
 }
 
