@@ -9,15 +9,15 @@
 
 /* CSS Custom Properties */
 :root {
-  /* Colors */
-  --color-bg: #f0f2f5;
-  --color-surface: #ffffff;
-  --color-text-primary: #2c2c2c;
-  --color-text-secondary: #6b7280;
-  --color-border: #d1d5db;
-  --color-shadow: rgba(0, 0, 0, 0.08);
-  --color-accent: #5b7fa6;
-  --color-accent-hover: #4a6a8a;
+  /* Colors — Gen Z vibrant dark theme */
+  --color-bg: #0f0c29;
+  --color-surface: rgba(255, 255, 255, 0.08);
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.6);
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-shadow: rgba(131, 56, 236, 0.3);
+  --color-accent: #ff006e;
+  --color-accent-hover: #cc0057;
 
   /* Spacing */
   --spacing-xs: 0.5rem;
@@ -52,7 +52,8 @@ html {
 
 body {
   font-family: var(--font-family);
-  background-color: var(--color-bg);
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  background-attachment: fixed;
   color: var(--color-text-primary);
   line-height: 1.6;
   min-height: 100vh;
@@ -73,9 +74,9 @@ body {
 .skeleton {
   background: linear-gradient(
     90deg,
-    #e0e0e0 25%,
-    #f0f0f0 50%,
-    #e0e0e0 75%
+    rgba(255, 255, 255, 0.06) 25%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.06) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;

@@ -10,16 +10,20 @@
 
 /* Widget card base styles - widgets will inherit these */
 :host ::ng-deep .widget-card {
-  background-color: var(--color-surface);
+  background: var(--color-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
-  box-shadow: 0 2px 8px var(--color-shadow);
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  box-shadow: 0 4px 24px var(--color-shadow);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
 :host ::ng-deep .widget-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 40px rgba(255, 0, 110, 0.4);
+  border-color: rgba(255, 0, 110, 0.4);
 }
 
 /* Responsive adjustments */
@@ -41,6 +45,7 @@
 @media (prefers-reduced-motion: reduce) {
   :host ::ng-deep .widget-card:hover {
     transform: none;
-    box-shadow: 0 2px 8px var(--color-shadow);
+    box-shadow: 0 4px 24px var(--color-shadow);
+    border-color: var(--color-border);
   }
 }

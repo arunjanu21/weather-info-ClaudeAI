@@ -1,7 +1,10 @@
 .widget-card {
   background: var(--color-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  box-shadow: 0 2px 8px var(--color-shadow);
+  box-shadow: 0 4px 24px var(--color-shadow);
   padding: var(--spacing-lg);
   min-height: 160px;
   display: flex;
@@ -9,12 +12,13 @@
   justify-content: center;
   animation: fade-slide-up 300ms ease-out both;
   animation-delay: 200ms;
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
 .widget-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 40px rgba(131, 56, 236, 0.4);
+  border-color: rgba(131, 56, 236, 0.4);
 }
 
 /* --- Skeleton state --- */
